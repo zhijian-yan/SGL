@@ -4,7 +4,7 @@
 #include "sgl_string.h"
 #include "sgl_bitmap.h"
 #include "sgl_builtin_font.h"
-#include "sgl_private.h"
+#include "sgl_common.h"
 #include <stdarg.h>
 #include <stdio.h>
 

@@ -2,8 +2,8 @@
 // Copyright (c) 2025 Zhijian Yan
 
 #include "sgl_circle.h"
+#include "sgl_common.h"
 #include "sgl_line.h"
-#include "sgl_private.h"
 
 /*
 +-----------> X

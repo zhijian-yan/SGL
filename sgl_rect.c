@@ -2,8 +2,8 @@
 // Copyright (c) 2025 Zhijian Yan
 
 #include "sgl_rect.h"
+#include "sgl_common.h"
 #include "sgl_line.h"
-#include "sgl_private.h"
 
 void sgl_draw_rect(int32_t x, int32_t y, int32_t w, int32_t h, int is_filled,
                    uint32_t color) {
@@ -15,11 +15,11 @@ void sgl_draw_rect(int32_t x, int32_t y, int32_t w, int32_t h, int is_filled,
         y += h + 1;
         h = -h;
     }
-    if (__sgl_clip_line(&x, &w, __act_scr->visible.left,
-                        __act_scr->visible.right))
+    if (__sgl_clip_line(&x, &w, active_screen->visible.left,
+                        active_screen->visible.right))
         return;
-    if (__sgl_clip_line(&y, &h, __act_scr->visible.top,
-                        __act_scr->visible.bottom))
+    if (__sgl_clip_line(&y, &h, active_screen->visible.top,
+                        active_screen->visible.bottom))
         return;
     if (w > h) {
         if (is_filled == 0 && h > 1) {

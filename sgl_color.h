@@ -10,12 +10,6 @@ extern "C" {
 
 #include "sgl_core.h"
 
-typedef enum {
-    SGL_MONO_BLACK = 0,
-    SGL_MONO_WHITE = 1,
-    SGL_MONO_INVERT = 2,
-} sgl_mono_color_t;
-
 #define SGL_COLOR_GET_A(color) ((uint8_t)((color) >> 24))
 #define SGL_COLOR_GET_R(color) ((uint8_t)((color) >> 16))
 #define SGL_COLOR_GET_G(color) ((uint8_t)((color) >> 8))

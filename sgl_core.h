@@ -8,14 +8,15 @@
 extern "C" {
 #endif
 
-#include "sgl_config.h"
+#include <stdint.h>
 
-typedef struct {
-    int32_t left;
-    int32_t top;
-    int32_t right;
-    int32_t bottom;
-} sgl_rect_t;
+#define SGL_FORMAT_STRING_BUFFERSIZE (128)
+
+typedef enum {
+    SGL_MONO_BLACK = 0,
+    SGL_MONO_WHITE = 1,
+    SGL_MONO_INVERT = 2,
+} sgl_mono_color_t;
 
 typedef enum {
     SGL_DIR_UP = 0,
@@ -64,13 +65,37 @@ typedef enum {
 
 #define SGL_ROTATE_DEFAULT SGL_ROTATE_0
 
-typedef struct sgl_screen *sgl_screen_handle_t;
+typedef struct {
+    int32_t left;
+    int32_t top;
+    int32_t right;
+    int32_t bottom;
+} sgl_rect_t;
 
-sgl_screen_handle_t sgl_create_screen(void *buffer, uint32_t buffer_size,
-                                      uint32_t hor_res, uint32_t ver_res);
-void sgl_delete_screen(sgl_screen_handle_t new_screen);
+typedef struct {
+    void *buffer;
+    uint32_t buffer_size;
+    uint32_t hor_res;
+    uint32_t ver_res;
+    uint32_t max_x;
+    uint32_t max_y;
+    uint32_t max_fps;
+    uint32_t fcount;
+    uint32_t ticks;
+    sgl_rect_t visible;
+    sgl_rect_t invalidate;
+    sgl_rotate_t rotate;
+    void (*paint)(void);
+    void (*flush)(void *buffer, uint32_t buffer_size);
+    void (*draw_pixel)(int32_t x, int32_t y, uint32_t color);
+} sgl_screen_t;
+
+extern sgl_screen_t *active_screen;
+
+int sgl_init(sgl_screen_t *screen, void *buffer, uint32_t buffer_size,
+             uint32_t hor_res, uint32_t ver_res);
 void sgl_handler(void);
-void sgl_set_screen(sgl_screen_handle_t screen);
+void sgl_set_screen(sgl_screen_t *screen);
 void sgl_set_buffer(void *buffer, uint32_t buffer_size);
 void sgl_set_paint(void (*paint)());
 void sgl_set_flush(void (*flush)(void *buffer, uint32_t buffer_size));

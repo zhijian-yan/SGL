@@ -2,38 +2,38 @@
 // Copyright (c) 2025 Zhijian Yan
 
 #include "sgl_line.h"
-#include "sgl_private.h"
+#include "sgl_common.h"
 
 void sgl_draw_point(int32_t x, int32_t y, uint32_t color) {
     if (__sgl_check_rect(x, y, x, y))
         return;
     __sgl_rotate_point(&x, &y);
-    __act_scr->draw_pixel(x, y, color);
+    active_screen->draw_pixel(x, y, color);
 }
 
 static void __sgl_draw_hline(int32_t x, int32_t y, int32_t len,
                              uint32_t color) {
-    if (y < __act_scr->visible.top || y > __act_scr->visible.bottom)
+    if (y < active_screen->visible.top || y > active_screen->visible.bottom)
         return;
-    if (__sgl_clip_line(&x, &len, __act_scr->visible.left,
-                        __act_scr->visible.right))
+    if (__sgl_clip_line(&x, &len, active_screen->visible.left,
+                        active_screen->visible.right))
         return;
     __sgl_draw_hpixel(x, y, len, color);
 }
 
 static void __sgl_draw_vline(int32_t x, int32_t y, int32_t len,
                              uint32_t color) {
-    if (x < __act_scr->visible.left || x > __act_scr->visible.right)
+    if (x < active_screen->visible.left || x > active_screen->visible.right)
         return;
-    if (__sgl_clip_line(&y, &len, __act_scr->visible.top,
-                        __act_scr->visible.bottom))
+    if (__sgl_clip_line(&y, &len, active_screen->visible.top,
+                        active_screen->visible.bottom))
         return;
     __sgl_draw_vpixel(x, y, len, color);
 }
 
 void sgl_draw_hline(int32_t x, int32_t y, int32_t len, uint32_t color) {
     __sgl_rotate_point(&x, &y);
-    switch (__act_scr->rotate) {
+    switch (active_screen->rotate) {
     case SGL_ROTATE_0:
         __sgl_draw_hline(x, y, len, color);
         break;
@@ -51,7 +51,7 @@ void sgl_draw_hline(int32_t x, int32_t y, int32_t len, uint32_t color) {
 
 void sgl_draw_vline(int32_t x, int32_t y, int32_t len, uint32_t color) {
     __sgl_rotate_point(&x, &y);
-    switch (__act_scr->rotate) {
+    switch (active_screen->rotate) {
     case SGL_ROTATE_0:
         __sgl_draw_vline(x, y, len, color);
         break;

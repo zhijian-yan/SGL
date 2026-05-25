@@ -2,18 +2,16 @@
 // Copyright (c) 2025 Zhijian Yan
 
 #include "sgl_core.h"
-#include "sgl_private.h"
+#include "sgl_common.h"
 #include <string.h>
 
-sgl_screen_handle_t sgl_create_screen(void *buffer, uint32_t buffer_size,
-                                      uint32_t hor_res, uint32_t ver_res) {
-    sgl_screen_handle_t screen;
-    if (!buffer)
-        return NULL;
-    screen = sgl_malloc(sizeof(struct sgl_screen));
-    if (!screen)
-        return NULL;
-    memset(screen, 0, sizeof(struct sgl_screen));
+sgl_screen_t *active_screen;
+
+int sgl_init(sgl_screen_t *screen, void *buffer, uint32_t buffer_size,
+             uint32_t hor_res, uint32_t ver_res) {
+    if (!screen || !buffer)
+        return -1;
+    memset(screen, 0, sizeof(sgl_screen_t));
     screen->buffer = buffer;
     screen->buffer_size = buffer_size;
     screen->hor_res = hor_res;
@@ -27,65 +25,75 @@ sgl_screen_handle_t sgl_create_screen(void *buffer, uint32_t buffer_size,
     screen->invalidate = screen->visible;
     screen->rotate = SGL_ROTATE_DEFAULT;
     screen->fcount = 0;
-    return screen;
-}
-
-void sgl_delete_screen(sgl_screen_handle_t new_screen) {
-    if (__act_scr)
-        sgl_free(__act_scr);
-    __act_scr = new_screen;
+    return 0;
 }
 
 void sgl_handler(void) {
-    __act_scr->paint();
-    __act_scr->flush(__act_scr->buffer, __act_scr->buffer_size);
-    ++__act_scr->fcount;
+    if (!active_screen || !active_screen->paint || !active_screen->flush)
+        return;
+    active_screen->paint();
+    active_screen->flush(active_screen->buffer, active_screen->buffer_size);
+    ++active_screen->fcount;
 }
 
-void sgl_set_screen(sgl_screen_handle_t screen) {
-    if (screen)
-        __act_scr = screen;
+void sgl_set_screen(sgl_screen_t *screen) {
+    if (!screen)
+        return;
+    active_screen = screen;
 }
 
 void sgl_set_buffer(void *buffer, uint32_t buffer_size) {
-    if (buffer) {
-        __act_scr->buffer = buffer;
-        __act_scr->buffer_size = buffer_size;
-    }
+    if (!active_screen || !buffer)
+        return;
+    active_screen->buffer = buffer;
+    active_screen->buffer_size = buffer_size;
 }
 
-void sgl_set_paint(void (*paint)()) { __act_scr->paint = paint; }
+void sgl_set_paint(void (*paint)()) {
+    if (!active_screen)
+        return;
+    active_screen->paint = paint;
+}
 
 void sgl_set_flush(void (*flush)(void *buffer, uint32_t buffer_size)) {
-    __act_scr->flush = flush;
+    if (!active_screen)
+        return;
+    active_screen->flush = flush;
 }
 
 void sgl_set_draw_pixel(void (*draw_pixel)(int32_t x, int32_t y,
                                            uint32_t color)) {
-    __act_scr->draw_pixel = draw_pixel;
+    if (!active_screen || !draw_pixel)
+        return;
+    active_screen->draw_pixel = draw_pixel;
 }
 
 void sgl_set_visible(int32_t left, int32_t top, int32_t right, int32_t bottom) {
-    if (left < 0 || top < 0 || right > __act_scr->max_x ||
-        bottom > __act_scr->max_y)
+    if (!active_screen)
         return;
-    __act_scr->visible.left = left;
-    __act_scr->visible.top = top;
-    __act_scr->visible.right = right;
-    __act_scr->visible.bottom = bottom;
+    if (left < 0 || top < 0 || right > active_screen->max_x ||
+        bottom > active_screen->max_y)
+        return;
+    active_screen->visible.left = left;
+    active_screen->visible.top = top;
+    active_screen->visible.right = right;
+    active_screen->visible.bottom = bottom;
 }
 
 uint32_t sgl_get_fcount(void) {
-    if (__act_scr)
-        return __act_scr->fcount;
-    return 0;
+    if (!active_screen)
+        return 0;
+    return active_screen->fcount;
 }
 
 void sgl_reset_fcount(void) {
-    if (__act_scr)
-        __act_scr->fcount = 0;
+    if (!active_screen)
+        return;
+    active_screen->fcount = 0;
 }
 
 void sgl_clear_screen(uint8_t value) {
-    memset(__act_scr->buffer, value, __act_scr->buffer_size);
+    if (!active_screen || !active_screen->buffer)
+        return;
+    memset(active_screen->buffer, value, active_screen->buffer_size);
 }
