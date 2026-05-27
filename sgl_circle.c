@@ -5,15 +5,15 @@
 #include "sgl_common.h"
 #include "sgl_line.h"
 
-/*
-+-----------> X
-|    6 7
-| 5       8
-| 4       1
-|    3 2
-v
-Y
-*/
+/**
+ * +-----------> X
+ * |    6 7
+ * | 5       8
+ * | 4       1
+ * |    3 2
+ * v
+ * Y
+ */
 
 void __sgl_draw_circle_section(int32_t xc, int32_t yc, int32_t r,
                                int32_t offset_x, int32_t offset_y,

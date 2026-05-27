@@ -7,6 +7,7 @@
 
 void sgl_draw_rect(int32_t x, int32_t y, int32_t w, int32_t h, int is_filled,
                    uint32_t color) {
+    __sgl_rotate_rect(&x, &y, &w, &h);
     if (w < 0) {
         x += w + 1;
         w = -w;

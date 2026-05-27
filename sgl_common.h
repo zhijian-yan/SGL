@@ -11,6 +11,7 @@ extern "C" {
 #include "sgl_core.h"
 
 void __sgl_rotate_point(int32_t *x, int32_t *y);
+void __sgl_rotate_rect(int32_t *x, int32_t *y, int32_t *w, int32_t *h);
 int __sgl_clip_line(int32_t *start, int32_t *len, int32_t min, int32_t max);
 void __sgl_align(int32_t *x, int32_t *y, int32_t w, int32_t h,
                  sgl_align_t align);

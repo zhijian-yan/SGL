@@ -23,6 +23,33 @@ void __sgl_rotate_point(int32_t *x, int32_t *y) {
     }
 }
 
+void __sgl_rotate_rect(int32_t *x, int32_t *y, int32_t *w, int32_t *h) {
+    int32_t temp1 = *x;
+    int32_t temp2 = *w;
+    switch (active_screen->rotate) {
+    case SGL_ROTATE_0:
+        break;
+    case SGL_ROTATE_90:
+        *x = active_screen->max_x - *y;
+        *y = temp1;
+        *w = -*h;
+        *h = temp2;
+        break;
+    case SGL_ROTATE_180:
+        *x = active_screen->max_x - *x;
+        *y = active_screen->max_y - *y;
+        *w = -*w;
+        *h = -*h;
+        break;
+    case SGL_ROTATE_270:
+        *x = *y;
+        *y = active_screen->max_y - temp1;
+        *w = *h;
+        *h = -temp2;
+        break;
+    }
+}
+
 int __sgl_clip_line(int32_t *start, int32_t *len, int32_t min, int32_t max) {
     int32_t end;
     if (*len > 0) {

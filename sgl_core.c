@@ -29,7 +29,8 @@ int sgl_init(sgl_screen_t *screen, void *buffer, uint32_t buffer_size,
 }
 
 void sgl_handler(void) {
-    if (!active_screen || !active_screen->paint || !active_screen->flush)
+    if (!active_screen || !active_screen->paint || !active_screen->flush ||
+        !active_screen->buffer)
         return;
     active_screen->paint();
     active_screen->flush(active_screen->buffer, active_screen->buffer_size);
@@ -78,6 +79,12 @@ void sgl_set_visible(int32_t left, int32_t top, int32_t right, int32_t bottom) {
     active_screen->visible.top = top;
     active_screen->visible.right = right;
     active_screen->visible.bottom = bottom;
+}
+
+void sgl_set_screen_rotation(sgl_rotate_t rotate) {
+    if (!active_screen)
+        return;
+    active_screen->rotate = rotate;
 }
 
 uint32_t sgl_get_fcount(void) {

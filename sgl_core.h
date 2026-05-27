@@ -39,7 +39,6 @@ typedef enum {
  *             |                           |
  *             +-------------+-------------+
  *   down_left          down_center          down_right
- *
  */
 
 typedef enum {
@@ -79,6 +78,8 @@ typedef struct {
     uint32_t ver_res;
     uint32_t max_x;
     uint32_t max_y;
+    uint32_t offset_x;
+    uint32_t offset_y;
     uint32_t max_fps;
     uint32_t fcount;
     uint32_t ticks;
@@ -102,6 +103,7 @@ void sgl_set_flush(void (*flush)(void *buffer, uint32_t buffer_size));
 void sgl_set_draw_pixel(void (*draw_pixel)(int32_t x, int32_t y,
                                            uint32_t color));
 void sgl_set_visible(int32_t left, int32_t top, int32_t right, int32_t bottom);
+void sgl_set_screen_rotation(sgl_rotate_t rotate);
 uint32_t sgl_get_fcount(void);
 void sgl_reset_fcount(void);
 void sgl_clear_screen(uint8_t value);
