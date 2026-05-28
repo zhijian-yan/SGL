@@ -16,7 +16,7 @@ void sgl_show_string(int32_t x, int32_t y, const char *str, int32_t length,
     int32_t fontsize = (fontheight + 7) / 8 * fontwidth;
     switch (dir) {
     case SGL_DIR_UP:
-        __sgl_align(&x, &y, fontwidth * length, fontheight, align);
+        sgl_align(&x, &y, fontwidth * length, fontheight, align);
         for (i = 0; i < length; ++i)
             sgl_show_mono_bitmap(
                 x + i * fontwidth, y, fontwidth, fontheight,
@@ -24,7 +24,7 @@ void sgl_show_string(int32_t x, int32_t y, const char *str, int32_t length,
                 color);
         break;
     case SGL_DIR_RIGHT:
-        __sgl_align(&x, &y, fontheight, fontwidth * length, align);
+        sgl_align(&x, &y, fontheight, fontwidth * length, align);
         for (i = 0; i < length; ++i)
             sgl_show_mono_bitmap(
                 x, y + i * fontwidth, fontwidth, fontheight,
@@ -32,7 +32,7 @@ void sgl_show_string(int32_t x, int32_t y, const char *str, int32_t length,
                 color);
         break;
     case SGL_DIR_LEFT:
-        __sgl_align(&x, &y, fontheight, fontwidth * length, align);
+        sgl_align(&x, &y, fontheight, fontwidth * length, align);
         y += (length - 1) * fontwidth;
         for (i = 0; i < length; ++i)
             sgl_show_mono_bitmap(
@@ -41,7 +41,7 @@ void sgl_show_string(int32_t x, int32_t y, const char *str, int32_t length,
                 color);
         break;
     case SGL_DIR_DOWN:
-        __sgl_align(&x, &y, fontwidth * length, fontheight, align);
+        sgl_align(&x, &y, fontwidth * length, fontheight, align);
         x += (length - 1) * fontwidth;
         for (i = 0; i < length; ++i)
             sgl_show_mono_bitmap(

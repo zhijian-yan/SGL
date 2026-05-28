@@ -5,64 +5,54 @@
 #include "sgl_common.h"
 
 void sgl_draw_point(int32_t x, int32_t y, uint32_t color) {
-    if (__sgl_check_rect(x, y, x, y))
+    if (sgl_check_rect(x, y, x, y))
         return;
-    __sgl_rotate_point(&x, &y);
+    sgl_rotate_point(&x, &y);
     active_screen->draw_pixel(x, y, color);
 }
 
-static void __sgl_draw_hline(int32_t x, int32_t y, int32_t len,
-                             uint32_t color) {
+void sgl_draw_hline(int32_t x, int32_t y, int32_t len, uint32_t color) {
     if (y < active_screen->visible.top || y > active_screen->visible.bottom)
         return;
-    if (__sgl_clip_line(&x, &len, active_screen->visible.left,
-                        active_screen->visible.right))
+    if (sgl_clip_line(&x, &len, active_screen->visible.left,
+                      active_screen->visible.right))
         return;
-    __sgl_draw_hpixel(x, y, len, color);
-}
-
-static void __sgl_draw_vline(int32_t x, int32_t y, int32_t len,
-                             uint32_t color) {
-    if (x < active_screen->visible.left || x > active_screen->visible.right)
-        return;
-    if (__sgl_clip_line(&y, &len, active_screen->visible.top,
-                        active_screen->visible.bottom))
-        return;
-    __sgl_draw_vpixel(x, y, len, color);
-}
-
-void sgl_draw_hline(int32_t x, int32_t y, int32_t len, uint32_t color) {
-    __sgl_rotate_point(&x, &y);
+    sgl_rotate_point(&x, &y);
     switch (active_screen->rotate) {
     case SGL_ROTATE_0:
-        __sgl_draw_hline(x, y, len, color);
+        sgl_draw_hpixel(x, y, len, color);
         break;
     case SGL_ROTATE_90:
-        __sgl_draw_vline(x, y, len, color);
+        sgl_draw_vpixel(x, y, len, color);
         break;
     case SGL_ROTATE_180:
-        __sgl_draw_hline(x, y, -len, color);
+        sgl_draw_hpixel(x, y, -len, color);
         break;
     case SGL_ROTATE_270:
-        __sgl_draw_vline(x, y, -len, color);
+        sgl_draw_vpixel(x, y, -len, color);
         break;
     }
 }
 
 void sgl_draw_vline(int32_t x, int32_t y, int32_t len, uint32_t color) {
-    __sgl_rotate_point(&x, &y);
+    if (x < active_screen->visible.left || x > active_screen->visible.right)
+        return;
+    if (sgl_clip_line(&y, &len, active_screen->visible.top,
+                      active_screen->visible.bottom))
+        return;
+    sgl_rotate_point(&x, &y);
     switch (active_screen->rotate) {
     case SGL_ROTATE_0:
-        __sgl_draw_vline(x, y, len, color);
+        sgl_draw_vpixel(x, y, len, color);
         break;
     case SGL_ROTATE_90:
-        __sgl_draw_hline(x, y, -len, color);
+        sgl_draw_hpixel(x, y, -len, color);
         break;
     case SGL_ROTATE_180:
-        __sgl_draw_vline(x, y, -len, color);
+        sgl_draw_vpixel(x, y, -len, color);
         break;
     case SGL_ROTATE_270:
-        __sgl_draw_hline(x, y, len, color);
+        sgl_draw_hpixel(x, y, len, color);
         break;
     }
 }
@@ -70,8 +60,8 @@ void sgl_draw_vline(int32_t x, int32_t y, int32_t len, uint32_t color) {
 void sgl_draw_line(int32_t x0, int32_t y0, int32_t x1, int32_t y1,
                    uint32_t color) {
     int32_t dx, dy, sx, sy, err;
-    __sgl_rotate_point(&x0, &y0);
-    __sgl_rotate_point(&x1, &y1);
+    sgl_rotate_point(&x0, &y0);
+    sgl_rotate_point(&x1, &y1);
     dx = x1 - x0;
     dy = y1 - y0;
     sx = 1, sy = 1;

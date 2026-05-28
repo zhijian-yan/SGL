@@ -3,13 +3,13 @@
 
 #include "sgl_common.h"
 
-void __sgl_rotate_point(int32_t *x, int32_t *y) {
+void sgl_rotate_point(int32_t *x, int32_t *y) {
     int32_t temp = *x;
     switch (active_screen->rotate) {
     case SGL_ROTATE_0:
         break;
     case SGL_ROTATE_90:
-        *x = active_screen->max_x - *y;
+        *x = active_screen->max_y - *y;
         *y = temp;
         break;
     case SGL_ROTATE_180:
@@ -18,19 +18,19 @@ void __sgl_rotate_point(int32_t *x, int32_t *y) {
         break;
     case SGL_ROTATE_270:
         *x = *y;
-        *y = active_screen->max_y - temp;
+        *y = active_screen->max_x - temp;
         break;
     }
 }
 
-void __sgl_rotate_rect(int32_t *x, int32_t *y, int32_t *w, int32_t *h) {
+void sgl_rotate_rect(int32_t *x, int32_t *y, int32_t *w, int32_t *h) {
     int32_t temp1 = *x;
     int32_t temp2 = *w;
     switch (active_screen->rotate) {
     case SGL_ROTATE_0:
         break;
     case SGL_ROTATE_90:
-        *x = active_screen->max_x - *y;
+        *x = active_screen->max_y - *y;
         *y = temp1;
         *w = -*h;
         *h = temp2;
@@ -43,14 +43,14 @@ void __sgl_rotate_rect(int32_t *x, int32_t *y, int32_t *w, int32_t *h) {
         break;
     case SGL_ROTATE_270:
         *x = *y;
-        *y = active_screen->max_y - temp1;
+        *y = active_screen->max_x - temp1;
         *w = *h;
         *h = -temp2;
         break;
     }
 }
 
-int __sgl_clip_line(int32_t *start, int32_t *len, int32_t min, int32_t max) {
+int sgl_clip_line(int32_t *start, int32_t *len, int32_t min, int32_t max) {
     int32_t end;
     if (*len > 0) {
         if (*start > max)
@@ -78,8 +78,8 @@ int __sgl_clip_line(int32_t *start, int32_t *len, int32_t min, int32_t max) {
     return 0;
 }
 
-void __sgl_align(int32_t *x, int32_t *y, int32_t w, int32_t h,
-                 sgl_align_t align) {
+void sgl_align(int32_t *x, int32_t *y, int32_t w, int32_t h,
+               sgl_align_t align) {
     switch (align) {
     case SGL_ALIGN_UP_LEFT:
         break;

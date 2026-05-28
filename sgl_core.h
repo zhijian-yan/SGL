@@ -95,18 +95,21 @@ extern sgl_screen_t *active_screen;
 
 int sgl_init(sgl_screen_t *screen, void *buffer, uint32_t buffer_size,
              uint32_t hor_res, uint32_t ver_res);
-void sgl_handler(void);
 void sgl_set_screen(sgl_screen_t *screen);
-void sgl_set_buffer(void *buffer, uint32_t buffer_size);
-void sgl_set_paint(void (*paint)());
-void sgl_set_flush(void (*flush)(void *buffer, uint32_t buffer_size));
-void sgl_set_draw_pixel(void (*draw_pixel)(int32_t x, int32_t y,
+void sgl_handler(void);
+void sgl_set_buffer(sgl_screen_t *screen, void *buffer, uint32_t buffer_size);
+void sgl_set_paint(sgl_screen_t *screen, void (*paint)());
+void sgl_set_flush(sgl_screen_t *screen,
+                   void (*flush)(void *buffer, uint32_t buffer_size));
+void sgl_set_draw_pixel(sgl_screen_t *screen,
+                        void (*draw_pixel)(int32_t x, int32_t y,
                                            uint32_t color));
-void sgl_set_visible(int32_t left, int32_t top, int32_t right, int32_t bottom);
-void sgl_set_screen_rotation(sgl_rotate_t rotate);
-uint32_t sgl_get_fcount(void);
-void sgl_reset_fcount(void);
-void sgl_clear_screen(uint8_t value);
+void sgl_set_visible(sgl_screen_t *screen, int32_t left, int32_t top,
+                     int32_t right, int32_t bottom);
+void sgl_set_screen_rotation(sgl_screen_t *screen, sgl_rotate_t rotate);
+uint32_t sgl_get_fcount(sgl_screen_t *screen);
+void sgl_reset_fcount(sgl_screen_t *screen);
+void sgl_clear_screen(sgl_screen_t *screen, uint8_t value);
 
 #ifdef __cplusplus
 }
