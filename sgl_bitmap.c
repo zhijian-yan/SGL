@@ -4,8 +4,8 @@
 #include "sgl_bitmap.h"
 #include "sgl_line.h"
 
-void sgl_show_mono_bitmap(int32_t x, int32_t y, int32_t w, int32_t h,
-                          const uint8_t *bitmap, sgl_dir_t dir,
+void sgl_show_mono_bitmap(sgl_screen_t *scr, int32_t x, int32_t y, int32_t w,
+                          int32_t h, const uint8_t *bitmap, sgl_dir_t dir,
                           uint32_t color) {
     int32_t offset_x, offset_y, temp, index, i, j;
     uint32_t mask;
@@ -19,7 +19,7 @@ void sgl_show_mono_bitmap(int32_t x, int32_t y, int32_t w, int32_t h,
             temp = offset_y + j;
             for (i = 0; i < w; ++i)
                 if ((bitmap[i + index] & mask))
-                    sgl_draw_point(offset_x + i, temp, color);
+                    sgl_draw_point(scr, offset_x + i, temp, color);
         }
         break;
     case SGL_DIR_RIGHT:
@@ -31,7 +31,7 @@ void sgl_show_mono_bitmap(int32_t x, int32_t y, int32_t w, int32_t h,
             temp = offset_x - j;
             for (i = 0; i < w; ++i)
                 if ((bitmap[i + index] & mask))
-                    sgl_draw_point(temp, offset_y + i, color);
+                    sgl_draw_point(scr, temp, offset_y + i, color);
         }
         break;
     case SGL_DIR_LEFT:
@@ -43,7 +43,7 @@ void sgl_show_mono_bitmap(int32_t x, int32_t y, int32_t w, int32_t h,
             temp = offset_x + j;
             for (i = 0; i < w; ++i)
                 if ((bitmap[i + index] & mask))
-                    sgl_draw_point(temp, offset_y - i, color);
+                    sgl_draw_point(scr, temp, offset_y - i, color);
         }
         break;
     case SGL_DIR_DOWN:
@@ -55,14 +55,14 @@ void sgl_show_mono_bitmap(int32_t x, int32_t y, int32_t w, int32_t h,
             temp = offset_y - j;
             for (i = 0; i < w; ++i)
                 if ((bitmap[i + index] & mask))
-                    sgl_draw_point(offset_x - i, temp, color);
+                    sgl_draw_point(scr, offset_x - i, temp, color);
         }
         break;
     }
 }
 
-void sgl_show_rgb565_bitmap(int32_t x, int32_t y, int32_t w, int32_t h,
-                            const uint16_t *bitmap, sgl_dir_t dir) {
+void sgl_show_rgb565_bitmap(sgl_screen_t *scr, int32_t x, int32_t y, int32_t w,
+                            int32_t h, const uint16_t *bitmap, sgl_dir_t dir) {
     int32_t offset_x, offset_y, temp, index, i, j;
     switch (dir) {
     case SGL_DIR_UP:
@@ -72,7 +72,7 @@ void sgl_show_rgb565_bitmap(int32_t x, int32_t y, int32_t w, int32_t h,
             index = j * w;
             temp = offset_y + j;
             for (i = 0; i < w; ++i)
-                sgl_draw_point(offset_x + i, temp, bitmap[i + index]);
+                sgl_draw_point(scr, offset_x + i, temp, bitmap[i + index]);
         }
         break;
     case SGL_DIR_RIGHT:
@@ -82,7 +82,7 @@ void sgl_show_rgb565_bitmap(int32_t x, int32_t y, int32_t w, int32_t h,
             index = j * w;
             temp = offset_x - j;
             for (i = 0; i < w; ++i)
-                sgl_draw_point(temp, offset_y + i, bitmap[i + index]);
+                sgl_draw_point(scr, temp, offset_y + i, bitmap[i + index]);
         }
         break;
     case SGL_DIR_LEFT:
@@ -92,7 +92,7 @@ void sgl_show_rgb565_bitmap(int32_t x, int32_t y, int32_t w, int32_t h,
             index = j * w;
             temp = offset_x + j;
             for (i = 0; i < w; ++i)
-                sgl_draw_point(temp, offset_y - i, bitmap[i + index]);
+                sgl_draw_point(scr, temp, offset_y - i, bitmap[i + index]);
         }
         break;
     case SGL_DIR_DOWN:
@@ -102,7 +102,7 @@ void sgl_show_rgb565_bitmap(int32_t x, int32_t y, int32_t w, int32_t h,
             index = j * w;
             temp = offset_y - j;
             for (i = 0; i < w; ++i)
-                sgl_draw_point(offset_x - i, temp, bitmap[i + index]);
+                sgl_draw_point(scr, offset_x - i, temp, bitmap[i + index]);
         }
         break;
     }

@@ -10,10 +10,11 @@ extern "C" {
 
 #include "sgl_core.h"
 
-void sgl_show_mono_bitmap(int32_t x, int32_t y, int32_t w, int32_t h,
-                          const uint8_t *bitmap, sgl_dir_t dir, uint32_t color);
-void sgl_show_rgb565_bitmap(int32_t x, int32_t y, int32_t w, int32_t h,
-                            const uint16_t *bitmap, sgl_dir_t dir);
+void sgl_show_mono_bitmap(sgl_screen_t *scr, int32_t x, int32_t y, int32_t w,
+                          int32_t h, const uint8_t *bitmap, sgl_dir_t dir,
+                          uint32_t color);
+void sgl_show_rgb565_bitmap(sgl_screen_t *scr, int32_t x, int32_t y, int32_t w,
+                            int32_t h, const uint16_t *bitmap, sgl_dir_t dir);
 
 #ifdef __cplusplus
 }
