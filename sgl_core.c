@@ -72,6 +72,12 @@ void sgl_set_visible(sgl_screen_t *scr, int32_t left, int32_t top,
     sgl_set_rect(&scr->visible, left, top, right, bottom);
 }
 
+void sgl_reset_visible(sgl_screen_t *scr) {
+    if (!scr)
+        return;
+    sgl_set_rect(&scr->visible, 0, 0, scr->max_x, scr->max_y);
+}
+
 void sgl_set_screen_rotation(sgl_screen_t *scr, sgl_rotate_t rotate) {
     if (!scr)
         return;

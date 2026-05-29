@@ -105,6 +105,7 @@ void sgl_set_draw_pixel(sgl_screen_t *scr,
                                            int32_t y, uint32_t color));
 void sgl_set_visible(sgl_screen_t *scr, int32_t left, int32_t top,
                      int32_t right, int32_t bottom);
+void sgl_reset_visible(sgl_screen_t *scr);
 void sgl_set_screen_rotation(sgl_screen_t *scr, sgl_rotate_t rotate);
 uint32_t sgl_get_fcount(sgl_screen_t *scr);
 void sgl_reset_fcount(sgl_screen_t *scr);
