@@ -12,6 +12,8 @@ void sgl_draw_rect(sgl_screen_t *scr, int32_t x, int32_t y, int32_t w,
     if (sgl_clip_line(&y, &h, scr->visible.top, scr->visible.bottom))
         return;
     sgl_rotate_rect(scr, &x, &y, &w, &h);
+    x -= scr->offset_x;
+    y -= scr->offset_y;
     if (w < 0) {
         x += w + 1;
         w = -w;
